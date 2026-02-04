@@ -1,0 +1,26 @@
+
+# Documentation files (keeping only README.md)
+QUICK_START.txt
+SETUP_GUIDE.md
+IMPLEMENTATION_SUMMARY.md
+INDEX.md
+00_START_HERE.txt
+DELIVERY_SUMMARY.txt
+
+# Node modules
+node_modules/
+npm-debug.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local

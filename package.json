@@ -1,0 +1,38 @@
+{
+    "name": "shopping-cart-system",
+    "version": "1.0.0",
+    "description": "A professional-grade Shopping Cart System implementation in JavaScript with clean code principles and modular design",
+    "main": "ShoppingCart.js",
+    "scripts": {
+        "test": "node test.js",
+        "examples": "node examples.js",
+        "demo": "node examples.js && node test.js"
+    },
+    "keywords": [
+        "shopping-cart",
+        "ecommerce",
+        "javascript",
+        "es6",
+        "clean-code",
+        "oop",
+        "module",
+        "class"
+    ],
+    "author": "Your Name",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yourusername/shopping-cart-system"
+    },
+    "engines": {
+        "node": ">=14.6.0"
+    },
+    "devDependencies": {},
+    "files": [
+        "ShoppingCart.js",
+        "README.md",
+        "index.html",
+        "test.js",
+        "examples.js"
+    ]
+}

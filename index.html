@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart System Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+        
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f093fb;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #e076e3;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: #ff6b6b;
+            color: white;
+            grid-column: 1 / -1;
+        }
+        
+        .btn-danger:hover {
+            background: #ee5a52;
+        }
+        
+        .cart-items {
+            margin-top: 20px;
+        }
+        
+        .cart-item {
+            background: #f8f9fa;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cart-item-info {
+            flex: 1;
+        }
+        
+        .cart-item-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .cart-item-details {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .cart-item-total {
+            font-weight: 600;
+            color: #667eea;
+            text-align: right;
+        }
+        
+        .remove-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 0.9em;
+        }
+        
+        .remove-btn:hover {
+            background: #ee5a52;
+        }
+        
+        .summary {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .summary-row.total {
+            border-top: 2px solid #667eea;
+            padding-top: 10px;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.3em;
+        }
+        
+        .discount-applied {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .empty-message {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-style: italic;
+        }
+        
+        .discount-codes {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .discount-codes h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+        
+        .discount-code-list {
+            font-size: 0.95em;
+            color: #333;
+        }
+        
+        .discount-code-list li {
+            margin: 5px 0;
+            list-style: none;
+            padding-left: 20px;
+        }
+        
+        .discount-code-list li:before {
+            content: "✓ ";
+            color: #667eea;
+            font-weight: bold;
+            margin-left: -20px;
+            margin-right: 10px;
+        }
+        
+        .message {
+            min-height: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🛒 Shopping Cart System</h1>
+            <p>Professional Shopping Cart Demo</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Add Item Section -->
+            <div class="card">
+                <h2>➕ Add Item to Cart</h2>
+
+                <div class="discount-codes">
+                    <h3>Available Discount Codes:</h3>
+                    <ul class="discount-code-list">
+                        <li>SAVE10 - 10% discount</li>
+                        <li>SAVE20 - 20% discount</li>
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <label for="productName">Product Name:</label>
+                    <input type="text" id="productName" placeholder="e.g., Laptop, Mouse, etc.">
+                </div>
+
+                <div class="form-group">
+                    <label for="productPrice">Price ($):</label>
+                    <input type="number" id="productPrice" placeholder="0.00" step="0.01" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="productQuantity">Quantity:</label>
+                    <input type="number" id="productQuantity" placeholder="1" value="1" step="1" min="1">
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-primary" onclick="addItem()">Add Item</button>
+                    <button class="btn-secondary" onclick="clearInputs()">Clear</button>
+                </div>
+
+                <div class="message" id="addMessage"></div>
+
+                <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
+
+                <h2>🎟️ Apply Discount</h2>
+
+                <div class="form-group">
+                    <label for="discountCode">Discount Code:</label>
+                    <input type="text" id="discountCode" placeholder="e.g., SAVE10 or SAVE20">
+                </div>
+
+                <button class="btn-primary" onclick="applyDiscount()" style="width: 100%;">Apply Discount</button>
+
+                <div class="message" id="discountMessage"></div>
+            </div>
+
+            <!-- Cart Summary Section -->
+            <div class="card">
+                <h2>📦 Cart Summary</h2>
+
+                <div id="cartItems" class="cart-items">
+                    <div class="empty-message">Your cart is empty</div>
+                </div>
+
+                <div id="summary" class="summary" style="display: none;">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row" id="discountRow" style="display: none;">
+                        <span>Discount:</span>
+                        <span id="discount">-$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>After Discount:</span>
+                        <span id="afterDiscount">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (10%):</span>
+                        <span id="tax">$0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                </div>
+
+                <button class="btn-danger" onclick="clearCart()">Clear Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the ShoppingCart class -->
+    <script src="ShoppingCart.js"></script>
+
+    <script>
+        // Initialize cart
+        const cart = new ShoppingCart();
+
+        function addItem() {
+            const name = document.getElementById('productName').value.trim();
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const quantity = parseInt(document.getElementById('productQuantity').value);
+
+            const messageEl = document.getElementById('addMessage');
+
+            // Validation
+            if (!name) {
+                showMessage(messageEl, 'Please enter a product name', 'error');
+                return;
+            }
+
+            if (isNaN(price) || price < 0) {
+                showMessage(messageEl, 'Please enter a valid price', 'error');
+                return;
+            }
+
+            if (isNaN(quantity) || quantity <= 0) {
+                showMessage(messageEl, 'Please enter a valid quantity', 'error');
+                return;
+            }
+
+            // Add item
+            if (cart.addItem(name, price, quantity)) {
+                showMessage(messageEl, `✓ ${name} added to cart!`, 'success');
+                clearInputs();
+                updateCartDisplay();
+            } else {
+                showMessage(messageEl, 'Failed to add item', 'error');
+            }
+        }
+
+        function applyDiscount() {
+            const code = document.getElementById('discountCode').value.trim();
+            const messageEl = document.getElementById('discountMessage');
+
+            if (!code) {
+                showMessage(messageEl, 'Please enter a discount code', 'error');
+                return;
+            }
+
+            if (cart.applyDiscount(code)) {
+                showMessage(messageEl, `✓ Discount code "${code}" applied!`, 'success');
+                document.getElementById('discountCode').value = '';
+                updateCartDisplay();
+            } else {
+                showMessage(messageEl, 'Invalid discount code', 'error');
+            }
+        }
+
+        function removeItem(product) {
+            if (cart.removeItem(product)) {
+                updateCartDisplay();
+            }
+        }
+
+        function clearCart() {
+            if (confirm('Are you sure you want to clear the cart?')) {
+                cart.clearCart();
+                document.getElementById('discountCode').value = '';
+                updateCartDisplay();
+                showMessage(document.getElementById('addMessage'), '✓ Cart cleared', 'success');
+            }
+        }
+
+        function clearInputs() {
+            document.getElementById('productName').value = '';
+            document.getElementById('productPrice').value = '';
+            document.getElementById('productQuantity').value = '1';
+            document.getElementById('productName').focus();
+        }
+
+        function showMessage(element, message, type) {
+            element.className = type;
+            element.textContent = message;
+            setTimeout(() => {
+                element.textContent = '';
+                element.className = '';
+            }, 5000);
+        }
+
+        function updateCartDisplay() {
+            const items = cart.getCartItems();
+            const itemsEl = document.getElementById('cartItems');
+            const summaryEl = document.getElementById('summary');
+
+            if (items.length === 0) {
+                itemsEl.innerHTML = '<div class="empty-message">Your cart is empty</div>';
+                summaryEl.style.display = 'none';
+                return;
+            }
+
+            // Update items
+            itemsEl.innerHTML = items.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.product}</div>
+                        <div class="cart-item-details">
+                            $${item.price.toFixed(2)} × ${item.quantity} = $${item.itemTotal.toFixed(2)}
+                        </div>
+                    </div>
+                    <button class="remove-btn" onclick="removeItem('${item.product}')">Remove</button>
+                </div>
+            `).join('');
+
+            // Update summary
+            const subtotal = cart.getSubtotal();
+            const discount = cart.getDiscount();
+            const tax = cart.getTax();
+            const total = cart.getTotal();
+
+            document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+            document.getElementById('afterDiscount').textContent = '$' + (subtotal - discount).toFixed(2);
+            document.getElementById('discount').textContent = '-$' + discount.toFixed(2);
+            document.getElementById('tax').textContent = '$' + tax.toFixed(2);
+            document.getElementById('total').textContent = '$' + total.toFixed(2);
+
+            // Show/hide discount row
+            const discountRow = document.getElementById('discountRow');
+            if (discount > 0) {
+                discountRow.style.display = 'flex';
+            } else {
+                discountRow.style.display = 'none';
+            }
+
+            summaryEl.style.display = 'block';
+        }
+
+        // Focus on product name on load
+        document.getElementById('productName').focus();
+    </script>
+</body>
+
+</html>
