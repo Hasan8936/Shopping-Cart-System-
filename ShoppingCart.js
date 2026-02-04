@@ -20,10 +20,8 @@ class ShoppingCart {
     };
 
     // Private fields (using # syntax for true encapsulation)
-    #
-    items; // Map to store cart items by product name
-    #
-    appliedDiscount; // Currently applied discount amount
+    #items; // Map to store cart items by product name
+    #appliedDiscount; // Currently applied discount amount
 
     constructor() {
         this.#items = new Map();
@@ -246,8 +244,7 @@ class ShoppingCart {
     }
 
     // Private helper method for input validation
-    #
-    validateInputs(product, price, quantity) {
+    #validateInputs(product, price, quantity) {
         // Validate product name
         if (!product || typeof product !== 'string') {
             console.error('Invalid product name');
@@ -270,7 +267,11 @@ class ShoppingCart {
     }
 }
 
-// Export for use in Node.js or module bundlers
+// Export for use in Node.js, browsers, and module bundlers
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = ShoppingCart;
+}
+// Make available in browser global scope
+if (typeof window !== 'undefined') {
+    window.ShoppingCart = ShoppingCart;
 }
